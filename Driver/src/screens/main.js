@@ -12,6 +12,8 @@ const AppNavigator = createStackNavigator({
     Home: {
         screen: HomeScreen
     }
+},{
+    headerMode: 'none'
 });
 
 export default createAppContainer(AppNavigator);
