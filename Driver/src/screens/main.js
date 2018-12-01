@@ -4,6 +4,7 @@ import { Button } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 import HomeScreen from './home';
 import LoginScreen from './login';
+import RouteScreen from './route';
 
 const AppNavigator = createStackNavigator({
     Login: {
@@ -11,6 +12,9 @@ const AppNavigator = createStackNavigator({
     },
     Home: {
         screen: HomeScreen
+    },
+    Route: {
+        screen: RouteScreen
     }
 },{
     headerMode: 'none'
