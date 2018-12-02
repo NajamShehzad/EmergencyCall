@@ -5,7 +5,6 @@ import { StyleSheet, Text, View } from 'react-native';
 //Your Api Here
 import { api } from '../../Api/mapApi';
 import MapViewDirections from 'react-native-maps-directions';
-const origin = { latitude: 24.926294, longitude: 67.022095 };
 const GOOGLE_MAPS_APIKEY = api;
 
 
@@ -45,7 +44,8 @@ export default class Map extends Component {
 
         let location = await Location.getCurrentPositionAsync({});
         console.log(location);
-        this.setState({ locationResult: JSON.stringify(location), location, marker: true });
+        let origin = { latitude: location.coords.latitude, longitude: location.coords.longitude }
+        this.setState({ locationResult: JSON.stringify(location), location, marker: true, origin });
     };
 
     setMarkers() {
@@ -64,7 +64,7 @@ export default class Map extends Component {
     }
 
     render() {
-        const { location, marker } = this.state;
+        const { location, marker, origin, destination } = this.state;
         console.log(" ====>>", location);
         return (
             <MapView
@@ -72,13 +72,13 @@ export default class Map extends Component {
                 style={{ flex: 1 }}
                 region={{ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
             >
-                <MapViewDirections
+                {origin && <MapViewDirections
                     origin={origin}
                     destination={destination}
                     apikey={GOOGLE_MAPS_APIKEY}
-                    strokeWidth={3}
+                    strokeWidth={4}
                     strokeColor="lightblue"
-                />
+                />}
                 {/* {
                     marker && this.setMarkers()
                 } */}
