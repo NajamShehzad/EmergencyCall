@@ -6,3 +6,5 @@ npm-debug.*
 *.key
 *.mobileprovision
 yarn.lock
+Api/**/*
+package-lock.json

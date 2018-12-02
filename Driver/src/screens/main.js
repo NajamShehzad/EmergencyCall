@@ -16,7 +16,8 @@ const AppNavigator = createStackNavigator({
     Route: {
         screen: RouteScreen
     }
-},{
+}
+,{
     headerMode: 'none'
 });
 
