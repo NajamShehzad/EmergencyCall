@@ -60,7 +60,10 @@ export default class Login extends React.Component {
                 <Button
                     title="Sign In"
                     buttonStyle={styles.loginButton}
-                    onPress={() => { Alert.alert(this.state.text) }} />
+                    onPress={() => {
+                        this.props.navigation.navigate("MapView");
+                        // Alert.alert(this.state.text) 
+                        }} />
                     </View>
 
             </View>
@@ -98,8 +101,8 @@ loginInput: {
     maxWidth: 400,
     },
     loginButton: {
-        fontSize: 15,
-        color: "#1b3815",
+        // fontSize: 15,
+        // color: "#1b3815",
         // width: width*0.8,
         height: 50,
         backgroundColor: "#d83634",

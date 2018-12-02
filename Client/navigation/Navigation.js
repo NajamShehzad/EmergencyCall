@@ -2,10 +2,14 @@
 import { createDrawerNavigator, createMaterialTopTabNavigator, createStackNavigator, createAppContainer } from "react-navigation";
 import Login from '../Screens/Login';
 
+import MapView from '../components/map/map';
 
 const StackNavigator = createStackNavigator({
     Login: {
         screen: Login
+    },
+    MapView: {
+        screen: MapView
     },
     // Dashboard: {
     //     screen: Screens.DashboardScreen
