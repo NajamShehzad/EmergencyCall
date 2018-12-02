@@ -41,11 +41,16 @@ export default class Map extends Component {
                 location,
             });
         }
+        // console.log("Working1");
 
         let location = await Location.getCurrentPositionAsync({});
-        console.log(location);
-        let origin = { latitude: location.coords.latitude, longitude: location.coords.longitude }
-        this.setState({ locationResult: JSON.stringify(location), location, marker: true, origin });
+        // console.log("Working2");
+        // console.log(location);
+
+        let cordss = { latitude: location.coords.latitude, longitude: location.coords.longitude }
+        console.log("Working3", cordss);
+
+        this.setState({ locationResult: JSON.stringify(location), location, marker: true, origin: cordss });
     };
 
     setMarkers() {
@@ -63,12 +68,20 @@ export default class Map extends Component {
         )
     }
 
+    handleChange(region) {
+        console.log("region ===>", region);
+        let origin = { latitude: region.latitude, longitude: region.longitude };
+        this.setState({ origin })
+    }
+
     render() {
         const { location, marker, origin, destination } = this.state;
         console.log(" ====>>", location);
         return (
             <MapView
                 showsUserLocation
+                followsUserLocation
+                onUserLocationonChange={(region => this.handleChange(region))}
                 style={{ flex: 1 }}
                 region={{ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
             >
