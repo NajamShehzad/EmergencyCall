@@ -1,50 +1,108 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { Button } from 'react-native';
-import {   Permissions, Location } from 'expo';
+import { MapView as Map12, Notifications, Permissions, Location } from 'expo';
+import React, { Component } from "react";
+import MapView, { Circle, Polyline } from 'react-native-maps'
+import { StyleSheet, Text, View } from 'react-native';
+//Your Api Here
+import { api } from '../../Api/mapApi';
+import MapViewDirections from 'react-native-maps-directions';
+const GOOGLE_MAPS_APIKEY = api;
 
-export default class Route extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      locationResult: null,
-      location: { coords: { latitude: 24.926294, longitude: 67.022095 } },
-    };
-  }
 
-  componentDidMount() {
-    this._getLocationAsync();
-  }
 
-  _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
-      this.setState({
-        locationResult: 'Permission to access location was denied',
-        location,
-      });
+export default class Map extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            locationResult: null,
+            location: { coords: { latitude: 24.926294, longitude: 67.022095 } },
+            marker: false,
+            routes: null,
+            coords: null,
+            origin: null,
+            destination: { latitude: 24.946294, longitude: 67.032095 }
+        };
     }
 
-    let location = await Location.getCurrentPositionAsync({});
-    this.setState({ locationResult: JSON.stringify(location), location});
-  };
+
+    componentDidMount() {
+
+        this._getLocationAsync();
+
+    }
 
 
-  render() {
-    const { location } = this.state;
 
-    return (
-      <View>
-        <Text>{location.coords.longitude}</Text>
-        <Text>{location.coords.latitude}</Text>
-        <Button
-          onPress={() => {}}
-          title="Route"
-          color="#ce0e00"
-          accessibilityLabel="Learn more about this purple button"
-        />
-      </View>
-    );
-  }
+
+    _getLocationAsync = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            this.setState({
+                locationResult: 'Permission to access location was denied',
+                location,
+            });
+        }
+        // console.log("Working1");
+
+        let location = await Location.getCurrentPositionAsync({});
+        // console.log("Working2");
+        // console.log(location);
+
+        let cordss = { latitude: location.coords.latitude, longitude: location.coords.longitude }
+        console.log("Working3", cordss);
+
+        this.setState({ locationResult: JSON.stringify(location), location, marker: true, origin: cordss });
+    };
+
+    setMarkers() {
+        return (
+            < Circle
+                draggable
+                center={this.state.location.coords}
+                title={"Current Location"}
+                radius={100}
+                strokeColor="#ffffff"
+                fillColor="#3399ff"
+                strokeWidth={2}
+            >
+            </ Circle>
+        )
+    }
+
+    handleChange(region) {
+        console.log("region ===>", region);
+        let origin = { latitude: region.latitude, longitude: region.longitude };
+        this.setState({ origin })
+    }
+
+    render() {
+        const { location, marker, origin, destination } = this.state;
+        console.log(" ====>>", location);
+        return (
+            <MapView
+                showsUserLocation
+                followsUserLocation
+                onUserLocationonChange={(region => this.handleChange(region))}
+                style={{ flex: 1 }}
+                region={{ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
+            >
+                {origin && <MapViewDirections
+                    origin={origin}
+                    destination={destination}
+                    apikey={GOOGLE_MAPS_APIKEY}
+                    strokeWidth={4}
+                    strokeColor="lightblue"
+                />}
+                {/* {
+                    marker && this.setMarkers()
+                } */}
+                {/* {this.state.coords && <MapView.Polyline
+                    coordinates={[
+                        { latitude: 24.926294, longitude: 67.022095 },
+                        ...this.state.coords,
+                        { latitude: 24.813483, longitude: 67.073392 }
+                    ]}
+                />} */}
+            </MapView>
+        )
+    }
 }
-
