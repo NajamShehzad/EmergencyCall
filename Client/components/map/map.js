@@ -68,9 +68,9 @@ export default class Map extends Component {
         )
     }
 
-    handleChange(region) {
-        console.log("region ===>", region);
-        let origin = { latitude: region.latitude, longitude: region.longitude };
+    handleChange(userLocation) {
+        console.log("User Location ===>", userLocation);
+        let origin = { latitude: userLocation.latitude, longitude: userLocation.longitude };
         this.setState({ origin })
     }
 
@@ -81,7 +81,7 @@ export default class Map extends Component {
             <MapView
                 showsUserLocation
                 followsUserLocation
-                onUserLocationonChange={(region => this.handleChange(region))}
+                onUserLocationonChange={(userLocation => this.handleChange(userLocation))}
                 style={{ flex: 1 }}
                 region={{ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
             >
